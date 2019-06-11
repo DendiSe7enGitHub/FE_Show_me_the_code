@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>promise</title>
+</head>
+<script>
+    let p = new Promise((resolve, reject) => {
+        console.log('new Promise');
+        resolve()
+    })
+    setTimeout(() => {
+        console.log('run settimeout');
+    }, 0);
+    p.then(() => {
+        console.log('promise resolve');
+    })
+    console.log('normal code');
+    // new Promise
+    // normal code
+    // promise resolve
+    // run settimeout
+    /**
+     * 1.promise 在被创建时会执行函数内部除去 resolve 之外的语句。
+     * 2.promise.then 的执行过程是异步的 所以会在同步代码执行之后再执行。
+     * 3.promise 添加微观任务到当前宏观任务队列的末尾。
+     * 4.setTimeout 添加宏观任务到当前宏观任务队列。
+     */
+
+    //  异步代码分析的方法
+    // 1.分析有多少个宏任务； 
+    // 2.在每个宏任务中，分析有多少个微任务；
+    // 3.根据调用次序，确定宏任务中的微任务执行次序；
+    // 4.根据宏任务的触发规则和调用次序，确定宏任务的执行次序；
+    // 5.确定整个顺序。
+
+
+    function sleep(duration) {
+        return new Promise(function (resolve, reject) {
+            console.log("b");
+            setTimeout(resolve, duration);
+        })
+    }
+    console.log("a");
+    sleep(5000).then(() => console.log("c"));
+
+    // 宏任务
+    // clg,a | clg,b
+    // setTimeout
+
+    // 微任务
+    // setTimeout,clg,c
+</script>
+
+</html>
