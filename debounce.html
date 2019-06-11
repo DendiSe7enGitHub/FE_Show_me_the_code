@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>debounce</title>
+</head>
+
+<body>
+    <p class="info">防抖(debounce):要等你触发完事件 n 秒内不再触发事件，我才执行</p>
+    <div id="container">
+    </div>
+</body>
+<style>
+    .info {
+        text-align: center;
+        width: 100%;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    #container {
+        height: 200px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #444;
+        color: #ffffff;
+        font-size: 3rem;
+    }
+</style>
+<script>
+    let count = 1;
+    let container = document.getElementById('container');
+    container.innerHTML = count
+    const getUserAction = (e) => {
+        console.log(e);
+        container.innerHTML = count++;
+    };
+
+    // 有定时器 => 清除之前的定时器，重新设置一个新定时器调用传入的函数
+    // 没有定时器 => 设置一个定时器调用传入的函数
+    const debounce = (callback, waitTime) => {
+        return function () {
+            let args = arguments;
+            if (callback.fid) { clearTimeout(callback.fid) }
+            callback.fid = setTimeout(() => {
+                callback.apply(this, args)
+            }, waitTime)
+        }
+    }
+    container.onmousemove = debounce(getUserAction, 1000)
+</script>
+
+</html>

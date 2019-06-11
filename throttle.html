@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>throttle</title>
+</head>
+
+<body>
+    <div id="container">
+    </div>
+</body>
+<style>
+    body {
+        margin: 0;
+    }
+
+    #container {
+        height: 200px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #444;
+        color: #ffffff;
+        font-size: 3rem;
+    }
+</style>
+<script>
+    let count = 1;
+    let container = document.getElementById('container');
+    container.innerHTML = count
+    const getUserAction = (e) => {
+        container.innerHTML = count++;
+    };
+
+    /**
+    节流实现1：时间差
+    */
+
+    // 触发 => 当前时间减去上次执行时间（初始为0） > 规定时间 => 调用传入的函数
+    // 触发 => 当前时间减去上次执行时间（初始为0） <= 规定时间 => return
+    // const throttle = (callback, waitTime) => {
+    //     let lastTime = 0
+    //     return function () {
+    //         let now = +new Date()
+    //         let args = arguments
+    //         if (now - lastTime > waitTime) {
+    //             callback.apply(this, args)
+    //             lastTime = now
+    //         }
+    //     }
+    // }
+
+    /**
+    节流实现2：定时器
+    */
+    // 触发 => 是否存在定时器，存在定时器则不执行
+    // 触发 => 是否存在定时器，不存在定时器，新建定时器且保存当前定时器ID用以下次判断。
+    // 定时器执行后，清除当前定时器ID
+    // const throttle = (callback, wait) => {
+    //     return function () {
+    //         let args = arguments
+    //         if (!callback.fid) {
+    //             callback.fid = setTimeout(() => {
+    //                 callback.fid = null
+    //                 callback.apply(this, args)
+    //             }, wait)
+    //         }
+    //     }
+    // }
+
+    /**
+    * 节流实现3:
+    * 保证鼠标移入能立刻执行，停止触发的时候还能再执行一次
+    * 一开始用时间差判断 时间差< 固定范围 => 清除定时器ID + 调用传入函数 + 设置lastTime
+    * 
+    */
+
+    // 第三版
+    function throttle(func, wait) {
+        var timeout, context, args, result;
+        var previous = 0;
+
+        var later = function () {
+            previous = +new Date();
+            timeout = null;
+            func.apply(context, args)
+        };
+
+        var throttled = function () {
+            var now = +new Date();
+            //下次触发 func 剩余的时间
+            var remaining = wait - (now - previous);
+            context = this;
+            args = arguments;
+            // 如果没有剩余的时间了或者你改了系统时间
+            if (remaining <= 0) {
+                console.log(1);
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                }
+                previous = now;
+                func.apply(context, args);
+            } else if (!timeout) {
+                console.log(2);
+                timeout = setTimeout(later, remaining);
+            }
+        };
+        return throttled;
+    }
+    container.onmousemove = throttle(getUserAction, 3000);
+</script>
+
+</html>

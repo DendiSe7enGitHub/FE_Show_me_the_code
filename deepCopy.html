@@ -1,0 +1,38 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script>
+    function deepCopy(targetObj, newObj) {
+        newObj = newObj || {}
+        for (let property in targetObj) {
+            if (typeof targetObj[property] === 'object') {
+                newObj[property] = (targetObj[property].constructor === Array) ? [] : {};
+                deepCopy(targetObj[property], newObj[property])
+            } else {
+                newObj[property] = targetObj[property]
+            }
+        }
+        return newObj
+    }
+
+    function test() {
+        console.log('test');
+        return false
+    }
+    let target = {
+        a: 1,
+        b: { k: 1, n: 2 },
+        c: [{ 1: 2 }, { 3: 4 }, [{ 1: 1, 2: 2 }]],
+        t: test
+    }
+
+    let result = deepCopy(target)
+    result.t()
+</script>
+
+</html>
