@@ -1,0 +1,29 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function notSure() {
+
+    }
+    // 如果是同步方法，则已经执行
+    (async () => notSure())()
+        .then(() => {
+            // 如果notSure是异步函数，则在这里获取执行后的结果
+        })
+        .catch((e) => {
+            // 捕获所有错误，因为使用 async 的方式来调用 notSure 会导致
+            // 错误无法抛出，所以必须在这里捕获。
+            console.log(e);
+        })
+</script>
+
+</html>
