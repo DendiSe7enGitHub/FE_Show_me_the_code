@@ -1,0 +1,65 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script>
+    class Promise {
+        constructor(excutor) {
+            // 需要确保 excutor 为函数
+            if (typeof excutor !== 'function') {
+                throw new Error('excutor must be a function')
+            }
+            // 当前promise的状态
+            this.state = 'pending' //fulfilled、rejected
+            // 当状态为 fulfilled 时的 value
+            this.value = undefined
+            // 当状态为 rejected 时的 reason
+            this.reason = undefined
+            // 缓存 Resolved 状态下的回调函数
+            this.onResolvedCallbacks = []
+            // 缓存 Rejected 状态下的回调函数
+            this.onRejectedCallbacks = []
+            let resolve = (value) => {
+                if (this.state === 'pending') {
+                    this.state = 'fulfilled'
+                    this.value = value
+                    this.onResolvedCallbacks.forEach(fn => fn())
+                }
+            }
+            let reject = (reason) => {
+                if (this.state === 'pending') {
+                    this.state = 'fulfilled、rejected'
+                    this.reason = reason
+                    this.onRejectedCallbacks.forEach(fn => fn())
+                }
+            }
+            try {
+                excutor(resolve, reject)
+            } catch (error) {
+                reject(error)
+            }
+        }
+        then(onFulfilled, onRejected) {
+            if (this.state === 'fulfilled') {
+                onFulfilled(this.value)
+            }
+            if (this.state === 'rejected') {
+                onRejected(this.reason)
+            }
+            if (this.state === 'pending') {
+                this.onResolvedCallbacks.push(() => {
+                    onFulfilled(this.value)
+                })
+                this.onRejectedCallbacks.push(() => {
+                    onRejected(this.reason)
+                })
+            }
+        }
+    }
+</script>
+
+</html>

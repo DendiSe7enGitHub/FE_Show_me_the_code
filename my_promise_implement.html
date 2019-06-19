@@ -1,0 +1,51 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script>
+    const PENDING = new Symbol()
+    const FULFILLED = new Symbol()
+    const REJECTED = new Symbol()
+
+    class MyPromise {
+        // excutor 初始化 promise 时定义的回调函数
+        constructor(excutor) {
+            this.status = PENDING
+            // FULFILLED 状态下有 value
+            this.value = undefined
+            // REJECTED 状态下有 reason
+            this.reason = undefined
+            // 这两个函数是调动 then 方法的参数
+            this.onFulfilled = () => {
+
+            }
+            this.onRejected = () => { }
+
+            this.resolve = (value) => {
+                if (this.status === PENDING) {
+                    this.status = FULFILLED
+                    this.value = value
+                }
+
+            }
+            this.reject = (reason) => {
+                this.status = REJECTED
+            }
+            try {
+                excutor(resolve, reject)
+            } catch (error) {
+
+            }
+        }
+        then(onFulfilled, onRejected) {
+            return new MyPromise()
+        }
+
+    }
+</script>
+
+</html>

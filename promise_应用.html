@@ -24,6 +24,15 @@
             // 错误无法抛出，所以必须在这里捕获。
             console.log(e);
         })
+
+
+    const f = () => console.log('now');
+    (
+        () => new Promise(
+            resolve => resolve(f())
+        )
+    )();
+    console.log('next');
 </script>
 
 </html>
