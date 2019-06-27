@@ -24,18 +24,27 @@
             // 缓存 Rejected 状态下的回调函数
             this.onRejectedCallbacks = []
             let resolve = (value) => {
-                if (this.state === 'pending') {
-                    this.state = 'fulfilled'
-                    this.value = value
-                    this.onResolvedCallbacks.forEach(fn => fn())
+                if (value instanceof Promise) {
+                    return value.then(resolve, reject);
                 }
+                // 实践中要确保 onFulfilled 和 onRejected 方法异步执行，且应该在 then 方法被调用的那一轮事件循环之后的新执行栈中执行。
+                setTimeout(() => {
+                    // 调用resolve 回调对应onFulfilled函数
+                    if (this.state === 'pending') {
+                        this.state = 'fulfilled'
+                        this.value = value
+                        this.onResolvedCallbacks.forEach(fn => fn())
+                    }
+                });
             }
             let reject = (reason) => {
-                if (this.state === 'pending') {
-                    this.state = 'fulfilled、rejected'
-                    this.reason = reason
-                    this.onRejectedCallbacks.forEach(fn => fn())
-                }
+                setTimeout(() => {
+                    if (this.state === 'pending') {
+                        this.state = 'fulfilled、rejected'
+                        this.reason = reason
+                        this.onRejectedCallbacks.forEach(fn => fn())
+                    }
+                })
             }
             try {
                 excutor(resolve, reject)

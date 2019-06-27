@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function bubbleSort(array) {
+        let len = array.length
+        // 找出 len 个最大值
+        for (let i = 0; i < len - 1; i++) {
+            // 找出 len个最大值的方法:不断 在 len-已找出的最大值 = 剩下的数值中找到最大值
+            for (let j = 0; j < len - i - 1; j++) {
+                if (array[j] > array[j + 1]) {
+                    let temp = array[j]
+                    array[j] = array[j + 1]
+                    array[j + 1] = temp
+                }
+            }
+        }
+        console.log(array);
+    }
+
+    function bubbleSortUpgrade(array) {
+        let high = array.length - 1
+        let low = 0
+        while (high > low) {
+            for (let j = low; j < high; ++j) {
+                if (array[j] > array[j + 1]) {
+                    let temp = array[j]
+                    array[j] = array[j + 1]
+                    array[j + 1] = temp
+                }
+            }
+            --high
+            for (let j = high; j > low; --j) {
+                if (array[j] < array[j - 1]) {
+                    let temp = array[j]
+                    array[j] = array[j - 1]
+                    array[j - 1] = temp
+                }
+            }
+            ++low
+        }
+        console.log('array: ', array);
+    }
+
+    bubbleSortUpgrade([5, 3, 4, 2, 6, 1, 8, 7])</script>
+
+</html>
