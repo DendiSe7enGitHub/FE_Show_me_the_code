@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>unique_array</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    const unique_forloop = (array) => {
+        let len = array.length
+        let result = [array[0]]
+        for (let i = 1; i < len; i++) {
+            if (!result.includes(array[i])) {
+                result.push(array[i])
+            }
+        }
+        return result
+    }
+
+    const unique_index_filter = (array) => {
+        return array.filter((item, index) => {
+            return array.indexOf(item) === index
+        })
+    }
+
+    const unique_splice = (array) => {
+        let temp = array.sort()
+        for (let i = 0; i < temp.length; i++) {
+            debugger
+            if (temp[i] === temp[i + 1]) {
+                temp.splice(i, 1)
+                i--
+            }
+        }
+        return temp
+    }
+    const unique_array_reduce = (array) => {
+        return array.reduce((preResult, current) => {
+            if (!preResult.includes(current)) {
+                preResult.push(current)
+            }
+            return preResult
+        }, [])
+    }
+
+    const unique_array_from_set = (array) => {
+        return Array.from(new Set(array))
+    }
+    const unique_array_set = (array) => {
+        return [...new Set(array)]
+    }
+    // let n = unique_array_reduce([1, 1, 2, 2, 3, 4, 5, 1])
+    // let n = unique_forloop([1, 1, 2, 2, 4, 3, 5, 1])
+    // let n = unique_index_filter([1, 1, 2, 2, 4, 3, 5, 1])
+    let n = unique_array_set([1, 1, 2, 2, 4, 3, 5, 1])
+
+    // unique_splice
+
+    console.log('n: ', n);
+</script>
+
+</html>
