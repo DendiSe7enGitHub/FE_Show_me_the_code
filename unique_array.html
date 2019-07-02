@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>unique_array</title>
+    <title>7种数组去重的方法</title>
 </head>
 
 <body>
@@ -22,13 +22,11 @@
         }
         return result
     }
-
     const unique_index_filter = (array) => {
         return array.filter((item, index) => {
             return array.indexOf(item) === index
         })
     }
-
     const unique_splice = (array) => {
         let temp = array.sort()
         for (let i = 0; i < temp.length; i++) {
@@ -48,20 +46,24 @@
             return preResult
         }, [])
     }
-
     const unique_array_from_set = (array) => {
         return Array.from(new Set(array))
     }
     const unique_array_set = (array) => {
         return [...new Set(array)]
     }
+    const unique_object_property = (arr) => {
+        var obj = {};
+        return arr.filter(function (item, index) {
+            // typeof item + item  是为了避免将不同类型但是转换后值相等的元素去除。
+            return obj.hasOwnProperty(typeof item + item) ? false : (obj[typeof item + item] = true)
+        })
+    }
     // let n = unique_array_reduce([1, 1, 2, 2, 3, 4, 5, 1])
     // let n = unique_forloop([1, 1, 2, 2, 4, 3, 5, 1])
     // let n = unique_index_filter([1, 1, 2, 2, 4, 3, 5, 1])
-    let n = unique_array_set([1, 1, 2, 2, 4, 3, 5, 1])
-
-    // unique_splice
-
+    // let n = unique_array_set([1, 1, 2, 2, 4, 3, 5, 1])
+    let n = unique_object_property(['1', 1, 2, 2, 4, 3, 5, 1])
     console.log('n: ', n);
 </script>
 
