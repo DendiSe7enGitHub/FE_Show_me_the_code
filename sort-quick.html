@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let SortArray = [5, 1, 9, 2, 3, 14, 6, 8, 10, 4, 16, 7]
+    quickSort(SortArray, 0, SortArray.length - 1)
+
+    // 快速排序
+    function quickSort(SortArray, left, right) {
+        if (left < right) {
+            let pivot = division(SortArray, left, right)
+            quickSort(SortArray, 0, pivot - 1)
+            quickSort(SortArray, pivot + 1, right)
+        }
+    }
+
+    // 拆分
+    /**
+     * @param {*} array 被排序的数组
+     * @param {*} left  左标识对应的index
+     * @param {*} right 右标识对应的index
+     */
+    //  [5, 1, 9, 2, 3,  14, 6, 8, 10, 4, 16, 7]
+    // baseNum 5
+
+    function division(array, left, right) {
+        // 基准值 默认为 left下标对应的值
+        let baseNum = array[left]
+        while (left < right) {
+            // 第一步：从右往左找，直到找到小于或者等于baseNum的数
+            while (left < right && array[right] > baseNum) {
+                right--
+            }
+            // 第二步：将这个数array[right] 赋值给 array[left]
+            array[left] = array[right]
+            // 第三步：从左往右找，直到找到大于或者等于baseNum的数
+            while (left < right && array[left] < baseNum) {
+                left++
+            }
+            // 第四步：将这个数array[left]赋值给right位置的值array[right]
+            array[right] = array[left]
+        }
+        // 第五步：将baseNum赋值给left
+        array[left] = baseNum
+        // 到这一步，在left位置上的值是baseNum
+        // index小于left的值，都比baseNum小
+        // index大于left的值，都比baseNum大
+        // 第六步：返回当前的left对应的index 作为下次分割的基准
+        return left
+        // 因为现在left左边的值都比left下标对应的值小，右边都比left下标对应的值大
+        // 所以，只需要对他左右两边的部分，再次进行上面的操作，就可以完成排序
+        // 这左右两部分分别为：
+        // [0->left-1],[left+1->length-1]
+    }
+</script>
+
+</html>
